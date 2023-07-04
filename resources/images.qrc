@@ -1,0 +1,17 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource>
+        <file>images/bluetooth.png</file>
+        <file>images/power_on.png</file>
+        <file>images/power_off.png</file>
+        <file>images/info.png</file>
+        <file>images/settings.png</file>
+        <file>images/refresh.png</file>
+        <file>images/home.png</file>
+        <file>images/support.png</file>
+        <file>images/teach.png</file>
+        <file>images/robot_not_connected.png</file>
+        <file>images/mic.png</file>
+        <file>images/sound.gif</file>
+    </qresource>
+</RCC>
