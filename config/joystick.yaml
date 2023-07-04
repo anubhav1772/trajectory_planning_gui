@@ -1,0 +1,26 @@
+ps4:
+  linear_button: 6  # Left axis 2 (1{UP}  -> -1{DOWN}), button 6
+  angular_button: 7 # Right axis 5 (1{UP} -> -1{DOWN}), button 7
+
+  # long press linear_button + axis_linear
+  # long press angular_button + axis_angular
+
+  axis_linear:
+    x: 4
+    y: 3
+    z: 1
+
+  scale_linear:
+    x: 0.05
+    y: 0.05
+    z: 0.05
+    
+  axis_angular:
+    x: 1
+    y: 0
+    z: 4
+    
+  scale_angular:
+    x: 0.05
+    y: 0.05
+    z: 0.05

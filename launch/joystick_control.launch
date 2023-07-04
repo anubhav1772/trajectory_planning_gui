@@ -1,0 +1,13 @@
+<launch>
+    <arg name="dev"         default="/dev/input/js0" />
+    <arg name="threshold"   default="0.75"/>
+    <arg name="controller"  default="ps4"/>
+
+    <rosparam command="load" file="$(find trajectory_planning_gui)/config/joystick.yaml"/>
+
+    <node pkg="joy" type="joy_node" name="ps4_joy" output="screen">
+        <param name="dev"   value="$(arg dev)" />
+        <param name="autorepeat_rate" value="10"/>
+        <param name="deadzone" value="0.2"/>
+    </node>
+</launch>

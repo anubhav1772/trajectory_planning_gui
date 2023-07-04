@@ -1,0 +1,22 @@
+<launch>
+    <!-- 
+    Use the required="true" attribute inside a <node> tag, so whenever 
+    your node dies or finishes it takes down all of the other nodes in the launch file 
+    -->
+    
+    <node pkg="trajectory_planning_gui" type="trajectory_planning_gui" name="trajectory_planning_gui" required="true" output="screen"/>
+
+    <arg name="dev"         default="/dev/input/js0" />
+    <arg name="threshold"   default="0.75"/>
+    <arg name="controller"  default="ps4"/>
+    <arg name="autorepeat_rate"   default="10"/>
+    <arg name="deadzone"  default="0.2"/>
+
+    <rosparam command="load" file="$(find trajectory_planning_gui)/config/joystick.yaml"/>
+    <node pkg="joy" type="joy_node" name="ps4_joy" output="screen">
+        <param name="dev"   value="$(arg dev)" />
+        <param name="autorepeat_rate" value="$(arg autorepeat_rate)"/>
+        <param name="deadzone" value="$(arg deadzone)"/>
+    </node>
+
+</launch>
