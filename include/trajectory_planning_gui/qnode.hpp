@@ -122,11 +122,6 @@ namespace trajectory_planning_gui {
     public:
       QNode(int argc, char** argv);
       virtual ~QNode();
-      /**
-      // NEEDED FOR SPEECH-2-COMMAND
-      bool init(QLabel* qlabel_1, QLabel* speech_command);
-      bool init(const std::string &master_url, const std::string &host_url, QLabel* qLabel_1, QLabel* speech_command);
-      **/
       bool init(QLabel* qlabel_1);
       bool init(const std::string &master_url, const std::string &host_url, QLabel* qLabel_1);
       void initialize();
@@ -284,7 +279,7 @@ namespace trajectory_planning_gui {
       ros::ServiceClient query_state_client;
       // moveit::planning_interface::MoveGroupInterface* move_group2_;
 
-      const std::string GRIPPER_PLANNING_GROUP = "gripper_manipulator";
+      const std::string GRIPPER_PLANNING_GROUP = "gripper";
       const std::string ARM_PLANNING_GROUP = "arm_manipulator";
       const std::vector<std::string> joint_names{"BJ", "SJ", "EJ", "W1J", "W2J", "W3J"};
       std::vector<double> max_vel;   
@@ -377,12 +372,6 @@ namespace trajectory_planning_gui {
 
       ros::Publisher move_joint_pub_;
       ros::Subscriber move_joint_sub_;
-
-      /**
-      ros::Publisher speech_signal_pub_;
-      ros::Subscriber speech_text_sub_;
-      QLabel* speech2text_label;
-      **/
 
       ros::Publisher marker_pub;
       visualization_msgs::MarkerArray marker_array;
