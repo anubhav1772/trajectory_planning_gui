@@ -261,7 +261,7 @@ private:
   std::string rframe_selected;
 
   const std::string frame_id_ = "base_link";
-  const std::string target_link_id_ = "EEF_Link";
+  const std::string target_link_id_ = "fts_toolside";
   const std::string group_id_ = "arm_manipulator";
   std::string pos_axis_id_;
   std::string rot_axis_id_;
