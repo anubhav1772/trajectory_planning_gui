@@ -174,6 +174,7 @@ namespace trajectory_planning_gui {
       bool setRandomPose();
       bool setHomePose();
       bool setUpPose();
+      bool setInitPose();
       bool setJointSpacePath(std::vector<double> joint_angle);
       bool setTaskSpacePath(std::vector<double> kinematics_pose);
       tf::Quaternion RPYToQuaternion(float R, float P, float Y);
