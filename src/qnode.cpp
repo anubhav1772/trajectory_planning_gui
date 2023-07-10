@@ -42,7 +42,6 @@ namespace trajectory_planning_gui {
     wait();
   }
 
-  // bool QNode::init(QLabel* qLabel_1, QLabel* speech_command)
   bool QNode::init(QLabel* qLabel_1)
   {
     ros::init(init_argc,init_argv,"trajectory_planning_gui");
@@ -63,14 +62,6 @@ namespace trajectory_planning_gui {
     // TEACH MODE
     teach_pub = nh.advertise<std_msgs::UInt8>("teach_signal", 1);
     teach_mode_flag = false;
-
-    /**
-    // SPEECH-2-COMMAND 
-    speech_signal_pub_ = nh.advertise<std_msgs::UInt8>( "speech_signal", 1);
-    speech_text_sub_ = nh.subscribe("speech_command", 10, &QNode::speech2voiceCB, this);
-
-    speech2text_label = speech_command;
-    **/
 
     marker_pub = nh.advertise<visualization_msgs::MarkerArray>("visualization_marker_array", 0);
 
@@ -157,7 +148,6 @@ namespace trajectory_planning_gui {
     return true;
   }
 
-  // bool QNode::init(const std::string &master_ip, const std::string &host_ip, QLabel* qLabel_1, QLabel* speech_command) 
   bool QNode::init(const std::string &master_ip, const std::string &host_ip, QLabel* qLabel_1) 
   {
     std::map<std::string, std::string> remappings;
@@ -182,14 +172,6 @@ namespace trajectory_planning_gui {
     // TEACH MODE
     teach_pub = nh.advertise<std_msgs::UInt8>("teach_signal", 1);
     teach_mode_flag = false;
-
-    /**
-    // SPEECH-2-COMMAND
-    speech_signal_pub_ = nh.advertise<std_msgs::UInt8>( "speech_signal", 1);
-    speech_text_sub_ = nh.subscribe("speech_command", 10, &QNode::speech2voiceCB, this);
-
-    speech2text_label = speech_command;
-    **/
 
     imageViewLabel_1 = qLabel_1;
 
@@ -306,22 +288,6 @@ namespace trajectory_planning_gui {
 
     return sim_mode;
   }
-
-  /**
-  void QNode::send_speech_signal(int signal)
-  {
-    // ROS_INFO("SPEECH SIGNAL: [%d]", signal);
-    std_msgs::UInt8 msg;
-    msg.data = signal;
-    speech_signal_pub_.publish(msg);
-  }
-
-  void QNode::speech2voiceCB(const std_msgs::String::ConstPtr& msg)
-  {
-    speech2text_label->setText(msg->data.c_str());
-    ROS_INFO("ROBOT COMMAND: [%s]", msg->data.c_str());
-  }
-  **/
 
   void QNode::init_joint_control()
   {
