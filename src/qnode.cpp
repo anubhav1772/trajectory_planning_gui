@@ -1324,7 +1324,7 @@ namespace trajectory_planning_gui {
   void QNode::init_cam_subscriber()
   {
     ros::NodeHandle nh;
-    image_sub = nh.subscribe("/front_camera/rgb/image_raw", 1, &QNode::robotCamViewer, this);
+    image_sub = nh.subscribe("/camera/rgb/image_raw", 1, &QNode::robotCamViewer, this);
   }
 
   void QNode::change_cam_subscriber(int camera_id)
@@ -1333,11 +1333,11 @@ namespace trajectory_planning_gui {
     ros::NodeHandle nh;
     if(camera_id==0)
     {
-      image_sub = nh.subscribe("/front_camera/rgb/image_raw", 1, &QNode::robotCamViewer, this);
+      image_sub = nh.subscribe("/camera/rgb/image_raw", 1, &QNode::robotCamViewer, this);
     }
     else
     {
-      image_sub = nh.subscribe("/side_camera/rgb/image_raw", 1, &QNode::robotCamViewer, this);
+      image_sub = nh.subscribe("/camera/rgb/image_raw", 1, &QNode::robotCamViewer, this);
     } 
   }
   
@@ -1577,6 +1577,24 @@ namespace trajectory_planning_gui {
     spinner.start();
 
     arm_move_group->setNamedTarget("HOME");
+
+    moveit::planning_interface::MoveGroupInterface::Plan my_plan;
+    bool success = (arm_move_group->plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    if (success == false)
+      return false;
+
+    arm_move_group->move();
+
+    spinner.stop();
+    return true;
+  }
+
+  bool QNode::setInitPose()
+  {
+    ros::AsyncSpinner spinner(1); 
+    spinner.start();
+
+    arm_move_group->setNamedTarget("INIT");
 
     moveit::planning_interface::MoveGroupInterface::Plan my_plan;
     bool success = (arm_move_group->plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
