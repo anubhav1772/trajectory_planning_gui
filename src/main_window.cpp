@@ -138,10 +138,8 @@ namespace trajectory_planning_gui {
     ui.btn_add_point->setToolTip(tr("Add a new Way-Point"));
     ui.btn_remove_point->setToolTip(tr("Remove a selected Way-Point"));
 
-    imageTopic.push_back("/front_camera/rgb/image_raw");
-    // imageTopic.push_back("/front_camera/depth_registered/image_raw");
-    imageTopic.push_back("/side_camera/rgb/image_raw");
-    // imageTopic.push_back("/side_camera/depth_registered/image_raw");
+    imageTopic.push_back("/camera/rgb/image_raw");
+    // imageTopic.push_back("/camera/depth_registered/image_raw");
 
     ui.joint_names_comboBox->addItem(QString::fromStdString("<null>"));
 
@@ -838,7 +836,6 @@ namespace trajectory_planning_gui {
       readSettings();
       if (!ui.env_var_cb->isChecked()) 
       {
-        // if (!qnode.init(ui.imageView, ui.speech2TextCommand)) 
         if (!qnode.init(ui.imageView)) 
         {
           showErrorMessage("Connection Error", "Unable to connect to the robot device. Please check the settings for further details.");
@@ -2252,19 +2249,12 @@ namespace trajectory_planning_gui {
       return;
     }
 
-    std::vector<double> joint_angle;
-    joint_angle.push_back(0.0);
-    joint_angle.push_back(0.0);
-    joint_angle.push_back(0.0);
-    joint_angle.push_back(0.0);
-    joint_angle.push_back(0.0);
-    joint_angle.push_back(0.0);
-
-    if(!qnode.setJointSpacePath(joint_angle))
+    if(!qnode.setInitPose())
     {
       writeLog("[ERR!!] Failed to send service");
       return;
     }
+
     writeLog("Send joint angle to initial pose");
   }
 
