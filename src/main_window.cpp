@@ -1354,12 +1354,6 @@ namespace trajectory_planning_gui {
           qnode.init_cam_subscriber();
           writeLog("SENSOR DATA VISUALIZATION");
         }
-        /**
-        if(ui.tab_widget_main->currentIndex()==5)
-        {
-          writeLog("VOICE CONTROL");
-        }
-        **/
         else if(ui.tab_widget_main->currentIndex()==5)
         {
           ROS_INFO("PROFILE TAB SELECTED");
@@ -2308,35 +2302,37 @@ namespace trajectory_planning_gui {
 
   void MainWindow::on_btn_gripper_open_clicked(void)
   {
-    // qnode.operateGripper(true);
-    if(!qnode.setToolControl(0.0))
+    // op == 1 means open gripper action
+    // value can decrease from 0.775 -> 0.04
+    if(!qnode.operateGripper(1, 0.4))
     {
-      writeLog("[ERR!!] Failed to send service");
+      writeLog("[ERROR] Failed to open gripper.");
       return;
     }
-    writeLog("Send gripper open");
+    writeLog("[SUCCESS] Open gripper action.");
   }
 
   void MainWindow::on_btn_gripper_close_clicked(void)
   {
-    // qnode.operateGripper(false);
-    if(!qnode.setToolControl(0.02))
+    // op == 0 means close gripper action
+    // value can decrease from 0.04 -> 0.775 
+    if(!qnode.operateGripper(0, 0.775))
     {
-      writeLog("[ERR!!] Failed to send service");
+      writeLog("[ERROR] Failed to close gripper.");
       return;
     }
-    writeLog("Send gripper close");
+    writeLog("[SUCCESS] Close gripper action.");
   }
 
   void MainWindow::on_btn_set_gripper_clicked(void)
   {
     double val = ui.doubleSpinBox_gripper->value();
-    if(!qnode.setToolControl(val))
+    if(!qnode.operateGripper(2, val))
     {
-      writeLog("[ERR!!] Failed to send service");
+      writeLog("[ERROR] Failed to set gripper to a desired value.");
       return;
     }
-    writeLog("Send gripper value");
+    writeLog("[SUCCESS] Gripper set to the desired value.");
   }
 
   void MainWindow::read_joint_angles(void)
