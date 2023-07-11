@@ -1750,8 +1750,8 @@ namespace trajectory_planning_gui {
 
   void MainWindow::writeLog(QString str)
   {
-    // ui.plainTextEdit_log->moveCursor (QTextCursor::End);
-    // ui.plainTextEdit_log->appendPlainText(str);
+    ui.plainTextEdit_log->moveCursor (QTextCursor::End);
+    ui.plainTextEdit_log->appendPlainText(str);
     outfile << "[ "+currentDateTime()+" ] "+str.toStdString()+"\n";
   }
 
