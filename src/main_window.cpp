@@ -1344,13 +1344,17 @@ namespace trajectory_planning_gui {
         }
         else if(ui.tab_widget_main->currentIndex()==3)
         {
+          ROS_INFO("JOYSTICK BASED JOGGING");
+        }
+        else if(ui.tab_widget_main->currentIndex()==4)
+        {
           ROS_INFO("ROBOT 3D VISUALIZATION TAB SELECTED");
           outfile << "ROBOT 3D VISUALIZATION TAB SELECTED.\n";
           ui.robot3d_verticalLayout->addWidget(qnode.attach_rviz_render_panel()); 
         }
-        else if(ui.tab_widget_main->currentIndex()==4)
+        else if(ui.tab_widget_main->currentIndex()==5)
         {
-          ROS_INFO("SENSOR DATA  VISUALIZATION TAB SELECTED");
+          ROS_INFO("SENSOR DATA VISUALIZATION TAB SELECTED");
           qnode.init_cam_subscriber();
           writeLog("SENSOR DATA VISUALIZATION");
         }
