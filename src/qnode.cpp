@@ -138,11 +138,8 @@ namespace trajectory_planning_gui {
 
     init_jog_mode();
     init_robot3D();
-    
-    // Move group gripper
-    // init_gripper_controller();
-    // std::string planning_group_name2 = "gripper_manipulator";
-    // move_group2_ = new moveit::planning_interface::MoveGroupInterface(planning_group_name2);
+  
+    init_gripper_controller();
     
     start();
     return true;
@@ -243,10 +240,7 @@ namespace trajectory_planning_gui {
     init_robot3D();
     
     // Move group gripper
-    // init_gripper_controller();
-    
-    // std::string planning_group_name2 = "gripper_manipulator";
-    // move_group2_ = new moveit::planning_interface::MoveGroupInterface(planning_group_name2);
+    init_gripper_controller();
     
     start();
     return true;
@@ -254,8 +248,8 @@ namespace trajectory_planning_gui {
 
   void QNode::init_gripper_controller()
   {
-    // gripper_move_group = MoveGroupPtr(new moveit::planning_interface::MoveGroupInterface(GRIPPER_PLANNING_GROUP));
-    // gripper_joint_model_group = gripper_move_group->getCurrentState()->getJointModelGroup(GRIPPER_PLANNING_GROUP);
+    gripper_move_group = MoveGroupPtr(new moveit::planning_interface::MoveGroupInterface(GRIPPER_PLANNING_GROUP));
+    gripper_joint_model_group = gripper_move_group->getCurrentState()->getJointModelGroup(GRIPPER_PLANNING_GROUP);
   }
 
   void QNode::set_robot_mode(bool sim)
@@ -2118,84 +2112,47 @@ namespace trajectory_planning_gui {
     marker_pub.publish(marker_array);
   }
 
-  // bool QNode::operateGripper(const bool &flag)
-  // {
-  //   if(flag)
-  //   {
-  //     ROS_INFO_STREAM("Initiating open gripper action...");
-  //   }
-  //   else
-  //   {
-  //     ROS_INFO_STREAM("Initiating close gripper action...");
-  //   }
-
-  //   // RobotState contains the current position/velocity/acceleration data
-  //   moveit::core::RobotStatePtr gripper_current_state = gripper_move_group->getCurrentState();
-
-  //   // get the current set of joint values for the gripper group
-  //   std::vector<double> gripper_joint_positions;
-  //   gripper_current_state->copyJointGroupPositions(gripper_joint_model_group, gripper_joint_positions);
-
-  //   // ROS_INFO("No. of joints in eef_group: %zd", gripper_joint_positions.size());
-
-  //   // set finger joint values
-  //   if (flag)
-  //   { // open gripper
-  //     gripper_joint_positions[0] = 0.00;
-  //     gripper_joint_positions[1] = 0.00;
-  //   }
-  //   else
-  //   {
-  //     // close_gripper
-  //     gripper_joint_positions[0] = 0.02;
-  //     gripper_joint_positions[1] = 0.02;
-  //   }
-
-  //   gripper_move_group->setJointValueTarget(gripper_joint_positions);
-  //   ros::Duration(1).sleep();
-
-  //   for(int i=0;i<gripper_joint_positions.size();i++)
-  //   {
-  //     ROS_INFO("gripper_joint_position[%d]: %f", i, gripper_joint_positions[i]);
-  //   }
-
-  //   bool success = static_cast<bool>(gripper_move_group->move());
-  //   if(flag)
-  //   {
-  //     ROS_INFO("Open gripper action is %s",(success==true)? "success":"failure");
-  //   }
-  //   else
-  //   {
-  //     ROS_INFO("Close gripper action is %s",(success==true)? "success":"failure");
-  //   }
-  //   return success;
-  // }
-
-  bool QNode::setToolControl(double gripper_pos)
+  bool QNode::operateGripper(const int op, float value)
   {
     // RobotState contains the current position/velocity/acceleration data
-    // moveit::core::RobotStatePtr gripper_current_state = gripper_move_group->getCurrentState();
+    moveit::core::RobotStatePtr gripper_current_state = gripper_move_group->getCurrentState();
 
-    // // get the current set of joint values for the gripper group
-    // std::vector<double> gripper_joint_positions;
-    // gripper_current_state->copyJointGroupPositions(gripper_joint_model_group, gripper_joint_positions);
+    // get the current set of joint values for the group.
+    std::vector<double> gripper_joint_positions;
+    gripper_current_state->copyJointGroupPositions(gripper_joint_model_group, gripper_joint_positions);
 
-    // for(int i=0; i<gripper_joint_positions.size(); i++)
-    // {
-    //   gripper_joint_positions[i] = gripper_pos;
-    // }
+    //ROS_INFO("No. of joints in eef group is %ld",gripper_joint_positions.size());
+    
+    bool success;
+    switch(op)
+    {
+      case 0:
+        ROS_INFO_STREAM("Initiating gripper full close action...");
+        break;
+      case 1:
+        ROS_INFO_STREAM("Initiating gripper full open action...");
+        break;
+      case 2:
+        if(value>gripper_joint_positions[0])
+        {
+          ROS_INFO_STREAM("Initiating close gripper action to "<< value <<".");
+        }
+        else if(value<gripper_joint_positions[0])
+        {
+          ROS_INFO_STREAM("Initiating open gripper action to "<< value <<".");
+        }
+        else
+        {
+          ROS_INFO_STREAM("Gripper's desired state is same as current state.");
+        }
+        break;
+    }
 
-    // gripper_move_group->setJointValueTarget(gripper_joint_positions);
-
-    // moveit::planning_interface::MoveGroupInterface::Plan gripper_plan;
-    // bool success = (gripper_move_group->plan(gripper_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-    // if (success == false)
-    // {
-    //   return false;
-    // }
-
-    // gripper_move_group->move(); 
-    // return true; 
-    return false;
+    gripper_joint_positions[0] = value;
+    gripper_move_group->setJointValueTarget(gripper_joint_positions);
+    //ros::Duration(1.0).sleep();
+    success = static_cast<bool>(gripper_move_group->move());
+    ROS_INFO("Gripper operation is %s",(success==true)? "success":"failure"); 
+    return success;
   }
 }  // namespace trajectory_planning_gui
