@@ -143,8 +143,7 @@ namespace trajectory_planning_gui {
 
       // GRIPPER CONTROLLER
       void init_gripper_controller();
-      // bool operateGripper(const bool &close_gripper);
-      bool setToolControl(double joint_angle);
+      bool operateGripper(const int op, float value); // op - operation (0-full close, 1-full open, 2-random)
 
       // Set Robot Control Mode 
       void set_robot_mode(bool sim);
@@ -278,7 +277,6 @@ namespace trajectory_planning_gui {
       arm_control_client_Ptr ArmClient;
       std::vector<double> initial_pos;
       ros::ServiceClient query_state_client;
-      // moveit::planning_interface::MoveGroupInterface* move_group2_;
 
       const std::string GRIPPER_PLANNING_GROUP = "gripper";
       const std::string ARM_PLANNING_GROUP = "arm_manipulator";
@@ -293,8 +291,8 @@ namespace trajectory_planning_gui {
       tf::Transform end_effector;
 
       // GRIPPER
-      GripperMoveGroupPtr gripper_move_group;
       // moveit::planning_interface::MoveGroupInterface gripper_move_group;
+      GripperMoveGroupPtr gripper_move_group;
       const robot_state::JointModelGroup *gripper_joint_model_group;
 
       // Parameter for setting the planning time of the MoveIt.
