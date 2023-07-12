@@ -280,7 +280,7 @@ namespace trajectory_planning_gui {
 
       const std::string GRIPPER_PLANNING_GROUP = "gripper";
       const std::string ARM_PLANNING_GROUP = "arm_manipulator";
-      const std::vector<std::string> joint_names{"BJ", "SJ", "EJ", "W1J", "W2J", "W3J"};
+      const std::vector<std::string> joint_names{"BJ", "SJ", "EJ", "W1J", "W2J", "W3J", "finger_joint"};
       std::vector<double> max_vel;   
       const double min_traj_dur = 5.0;
       double max_velocity_scaling_factor;
