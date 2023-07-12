@@ -289,33 +289,10 @@ namespace trajectory_planning_gui {
     move_joint_sub_ = nh.subscribe("move_joint", 10, &QNode::control_joint_cb, this);
   }
 
-  void QNode::send_joint_data(std::vector<double> joint_angles, double joint_velocities[6], double joint_accelerations[6])
-  {
-    // publish frame data
-    trajectory_planning_gui::MoveJoint msg;
-    msg.header.stamp = ros::Time::now();
-    msg.header.frame_id = frame_id_;
-
-    int num_joints = joint_names.size();
-
-    msg.joint_names.resize(num_joints);
-    msg.positions.resize(num_joints);
-    msg.velocities.resize(num_joints);
-    msg.accelerations.resize(num_joints);
-
-    for (int i=0; i<num_joints; i++)
-    {
-      msg.joint_names[i] = joint_names[i];
-      msg.positions[i] = joint_angles[i];
-      msg.velocities[i] = joint_velocities[i];
-      msg.accelerations[i] = joint_accelerations[i];
-    }
-    move_joint_pub_.publish(msg);
-  }
-
   void QNode::control_joint_cb(trajectory_planning_gui::MoveJointConstPtr msg)
   {
     ROS_INFO("JOINT COMMAND RECEIVED");
+    // ROS_INFO_STREAM("number of joints :"<<msg->joint_names.size());
 
     // Validate the message
     if ((msg->joint_names.size() != msg->positions.size()) || (msg->joint_names.size() != msg->velocities.size()) || (msg->joint_names.size() != msg->accelerations.size()))
@@ -362,34 +339,35 @@ namespace trajectory_planning_gui {
     for (auto it=cinfo_map_.begin(); it!=cinfo_map_.end(); it++)
     {
       auto controller_name = it->first;
-      auto joint_names = it->second.joints;
+      auto joint_names_ = it->second.joints;
 
       trajectory_msgs::JointTrajectory traj;
       trajectory_msgs::JointTrajectoryPoint point;
       point.time_from_start = ros::Duration(time_from_start_);
 
-      for (int i=0; i<joint_names.size(); i++)
+      for (int i=0; i<joint_names_.size(); i++)
       {
         size_t joint_index = std::distance(msg->joint_names.begin(),
-                                        std::find(msg->joint_names.begin(),
-                                        msg->joint_names.end(), joint_names[i]));
+                                          std::find(msg->joint_names.begin(),
+                                                    msg->joint_names.end(), 
+                                                    joint_names_[i]));
         if (joint_index == msg->joint_names.size())
         {
-          ROS_INFO_STREAM("Cannot find joint in jog_joint: " << joint_names[i]);
+          ROS_INFO_STREAM("Cannot find joint in jog_joint: " << joint_names_[i]);
           continue;
         }
         size_t state_index = std::distance(joint_state_.name.begin(),
                                           std::find(joint_state_.name.begin(),
-                                          joint_state_.name.end(), joint_names[i]));
+                                          joint_state_.name.end(), joint_names_[i]));
         if (state_index == joint_state_.name.size())
         {
-          ROS_ERROR_STREAM("Cannot find joint " << joint_names[i] << " in joint_states_");
+          ROS_ERROR_STREAM("Cannot find joint " << joint_names_[i] << " in joint_states_");
           continue;
         }
         // Update start joint position
         joint_state_.position[state_index] = msg->positions[joint_index];
         // Fill joint trajectory joint_names and positions
-        traj.joint_names.push_back(joint_names[i]);
+        traj.joint_names.push_back(joint_names_[i]);
         point.positions.push_back(joint_state_.position[state_index]);
         point.velocities.push_back(0.0);
         point.accelerations.push_back(0.0);
@@ -411,6 +389,30 @@ namespace trajectory_planning_gui {
     }
     // Publish start joint state for debug
     joint_state_pub_.publish(joint_state_);
+  }
+
+  void QNode::send_joint_data(std::vector<double> joint_angles, double joint_velocities[6], double joint_accelerations[6])
+  {
+    // publish frame data
+    trajectory_planning_gui::MoveJoint msg;
+    msg.header.stamp = ros::Time::now();
+    msg.header.frame_id = frame_id_;
+
+    int num_joints = joint_names.size();
+
+    msg.joint_names.resize(num_joints);
+    msg.positions.resize(num_joints);
+    msg.velocities.resize(num_joints);
+    msg.accelerations.resize(num_joints);
+
+    for (int i=0; i<num_joints; i++)
+    {
+      msg.joint_names[i] = joint_names[i];
+      msg.positions[i] = joint_angles[i];
+      msg.velocities[i] = joint_velocities[i];
+      msg.accelerations[i] = joint_accelerations[i];
+    }
+    move_joint_pub_.publish(msg);
   }
 
   void QNode::init_robot3D()
@@ -847,8 +849,8 @@ namespace trajectory_planning_gui {
     // pnh.param<double>("time_from_start", time_from_start_, 0.5);
     // pnh.param<bool>("use_action", use_action_, false);
     // pnh.param<bool>("intermittent", intermittent_, false);
-    target_link_ = "EEF_Link";
-    group_name_ = "arm_manipulator";
+    target_link_ = "fts_toolside";
+    group_name_ = ARM_PLANNING_GROUP;
     time_from_start_ = 2.0;
     use_action_ = true;
     intermittent_ = false;
@@ -1161,9 +1163,11 @@ namespace trajectory_planning_gui {
     }
     XmlRpc::XmlRpcValue controller_list;
     gnh.getParam("move_group/controller_list", controller_list);
+    // ROS_INFO_STREAM("# of controllers: "<<controller_list.size());
     // excluding gripper controller for now from controller list
     // that means including only arm controller
     // for (int i = 0; i < (controller_list.size() - 1); i++)
+    // Below code includes all available controllers
     for (int i = 0; i < controller_list.size(); i++)
     {
       if (!controller_list[i].hasMember("name"))
@@ -1180,6 +1184,7 @@ namespace trajectory_planning_gui {
       {
         // get name member
         std::string name = std::string(controller_list[i]["name"]);
+        // ROS_INFO_STREAM("controller name: "<<name);
         // get action_ns member if exists
         std::string action_ns = std::string("");
         if (controller_list[i].hasMember("action_ns"))
@@ -1721,6 +1726,7 @@ namespace trajectory_planning_gui {
   void QNode::waypoints_arm_goal(control_msgs::FollowJointTrajectoryGoal& goal, int iterations, std::vector<std::vector<double>> waypoints, double joint_velocities[], double joint_accelerations[])
   {
       // The joint names, which apply to all waypoints
+      ROS_INFO_STREAM("#joints: "<<joint_names.size());
       for(int i=0;i<joint_names.size();i++)
       {
         goal.trajectory.joint_names.push_back(joint_names[i]);
@@ -1863,7 +1869,7 @@ namespace trajectory_planning_gui {
   {
     while(ros::ok())
     {
-      ROS_INFO_STREAM("arm client result _> " <<actionClient->getResult());
+      // ROS_INFO_STREAM("arm client result _> " <<actionClient->getResult());
       // ROS_INFO_STREAM("arm client _> " <<actionClient->getState().isDone());
       if(actionClient->getState().isDone()) // --> 1
       {
