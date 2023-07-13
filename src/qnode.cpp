@@ -439,16 +439,23 @@ namespace trajectory_planning_gui {
     rviz::Display *grid_ = manager_->createDisplay("rviz/Grid", "adjustable grid", true);
     // grid_->subProp("Line Style")->setValue("Billboards");
     grid_->subProp("Cell Size")->setValue("0");
-
     ROS_ASSERT( grid_ != NULL );
-
-    rviz::Display *robot_ = manager_->createDisplay("rviz/RobotModel","adjustable robot",true);
+    
+    rviz::Display *robot_ = manager_->createDisplay("rviz/RobotModel", "adjustable robot", false); // (name, Value, Enabled)
+    //robot_->subProp("Name")->setValue("RobotModel");
+    //robot_->subProp("Value")->setValue("false");
+    //robot_->subProp("Enabled")->setValue(true); 
     robot_->subProp("Robot Description")->setValue("robot_description");
     robot_->subProp("TF Prefix")->setValue("");
     robot_->subProp("Visual Enabled")->setValue(true);
     robot_->subProp("Collision Enabled")->setValue(true);//default is false
     robot_->subProp("Alpha")->setValue(1);//default is 1
-    robot_->subProp("Update Interval")->setValue(0.2);//default is 0.1   
+    robot_->subProp("Update Interval")->setValue(0.2);//default is 0.1  
+    robot_->subProp("Links")->subProp("All Links Enabled")->setValue(true);
+    robot_->subProp("Links")->subProp("Expand Joint Details")->setValue(false);
+    robot_->subProp("Links")->subProp("Expand Link Details")->setValue(false);
+    robot_->subProp("Links")->subProp("Expand Tree")->setValue(false);
+    robot_->subProp("Links")->subProp("Link Tree Style")->setValue("Links in Alphabetic Order");
 
     ROS_ASSERT(robot_!=NULL);         
 
@@ -456,9 +463,16 @@ namespace trajectory_planning_gui {
     // rviz::Display *motion_plan_ = manager_->createDisplay("moveit_rviz_plugin/MotionPlanning", "adjustable motionplan", true);
     // ROS_ASSERT(motion_plan_!=NULL);
 
-    /*rviz::Display *plan_scene_=manager_->createDisplay("moveit_rviz_plugin/PlanningScene", "adjustable planning",true);
+    // Rviz Planning Scene
+    rviz::Display *plan_scene_=manager_->createDisplay("moveit_rviz_plugin/PlanningScene", "adjustable planning",true);
+    //plan_scene_->subProp("Enabled")->setValue("true");
+    plan_scene_->subProp("Move Group Namespace")->setValue("");
+    plan_scene_->subProp("Planning Scene Topic")->setValue("move_group/monitored_planning_scene");
+    plan_scene_->subProp("Robot Description")->setValue("robot_description");
+    //plan_scene_->subProp("Value")->setValue("true");
     ROS_ASSERT(plan_scene_!=NULL);
-
+  
+    /*
     rviz::Display *robot_state_=manager_->createDisplay("moveit_rviz_plugin/RobotState", "adjustable robot state",true);
     ROS_ASSERT(robot_state_!=NULL);
 
