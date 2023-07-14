@@ -260,7 +260,7 @@ private:
   std::vector<std::string> rframe = {"world", "base_link"};
   std::string rframe_selected;
 
-  const std::string frame_id_ = "base_link";
+  std::string frame_id_;
   const std::string target_link_id_ = "fts_toolside";
   const std::string group_id_ = "arm_manipulator";
   std::string pos_axis_id_;

@@ -579,6 +579,8 @@ namespace trajectory_planning_gui {
       }
       ui.referenceFrameCB->setCurrentText(saved_ref_frame.toUtf8().constData());
       qnode.set_reference_frame(saved_ref_frame.toUtf8().constData());
+
+      frame_id_ = "world";
     }
     else
     { 
@@ -600,7 +602,10 @@ namespace trajectory_planning_gui {
         ui.referenceFrameCB->setCurrentText(QString::fromStdString(rframe[1]));
         qnode.set_reference_frame(rframe[1]);
       } 
+
+      frame_id_ = "base_link";
     }
+    ROS_INFO_STREAM("reference frame"<<frame_id_);
   }
 
   void MainWindow::on_teachModeOn(void)
@@ -1328,7 +1333,7 @@ namespace trajectory_planning_gui {
           {
             ui.teachModeLog->setText("Teach mode is OFF.");
           }
-          else                               // true, teach mode is ON, hence teachModeOn button is disabled
+          else // true, teach mode is ON, hence teachModeOn button is disabled
           {
             int index = ui.geometryCB->currentIndex();
             ROS_INFO_STREAM("Teach Mode is ON with selected geometry "<<geometry[index]<<".");
