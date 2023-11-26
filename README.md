@@ -26,7 +26,9 @@ Launch GUI:
 
     $ roslaunch trajectory_planning_gui trajectory_planning_gui.launch
 
-
-ROS - Noetic
-
-Gazebo version 11.11.0
+### Requirements
+---
+* [6-dof-robotic-arm package](https://github.com/anubhav1772/6-dof-robotic-arm)
+* [Eigen v3.4.0](http://www.eigen.tuxfamily.org/index.php?title=Main_Page#Download) - [Installation](https://github.com/anubhav1772/trajectory_planning_gui/blob/main/Eigen3_installation)
+* ROS Noetic (Ubuntu 20.04)
+* Gazebo v11.11.0
