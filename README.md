@@ -2,7 +2,7 @@
 Qt based GUI for motion planning of a 6 DOF robotic arm.
 
 ### Installation
-Clone the repository using:
+Clone the repositories using:
 
     git clone https://github.com/anubhav1772/6-dof-robotic-arm.git
     git clone https://github.com/anubhav1772/trajectory_planning_gui.git
@@ -23,6 +23,11 @@ Launch moveit and rviz:
 Launch GUI:
 
     $ roslaunch trajectory_planning_gui trajectory_planning_gui.launch
+    
+(Qt Specific):
+    
+    $ sudo apt install qtcreator
+    $ sudo apt install libqt5multimedia5-plugins qtmultimedia5-dev
 
 ### Requirements
 * [6-dof-robotic-arm](https://github.com/anubhav1772/6-dof-robotic-arm) package
