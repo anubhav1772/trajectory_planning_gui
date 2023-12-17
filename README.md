@@ -1,5 +1,5 @@
 # trajectory_planning_gui
-Qt based GUI for motion planning of a 6 DOF robotic arm.
+A Qt-based software controller for a 6 DOF robotic arm.
 
 ### Installation
 Clone the repositories using:
