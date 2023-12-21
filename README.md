@@ -1,5 +1,5 @@
 # trajectory_planning_gui
-A Qt-based software controller for a 6 DOF robotic arm.
+A C++ Qt-based software controller for a 6 DOF robotic arm. Backend is ROS.
 
 ### Installation
 Clone the repositories using:
