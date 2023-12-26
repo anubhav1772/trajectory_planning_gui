@@ -1,25 +1,14 @@
-/*****************************************************************************
-** Includes
-*****************************************************************************/
 #include "../include/trajectory_planning_gui/main_window.hpp"
-
-/*****************************************************************************
-** Namespaces
-*****************************************************************************/
 
 namespace trajectory_planning_gui {
 
-  using namespace Qt;
+using namespace Qt;
 
-  /*****************************************************************************
-  ** Implementation [MainWindow]
-  *****************************************************************************/
+/*****************************************************************************
+** Implementation [MainWindow]
+*****************************************************************************/
 
-/*  MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
-    : QMainWindow(parent), 
-      qnode(argc,argv),
-      appSettings(parent, "settings.json") */
-   MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
+MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     : QMainWindow(parent), 
       qnode(argc,argv)
   {
@@ -27,7 +16,8 @@ namespace trajectory_planning_gui {
     // this->setWindowFlags(Qt::FramelessWindowHint); //Makes the frame invisible
     // this->showMaximized();
 
-    QObject::connect(ui.actionAbout_Qt, SIGNAL(triggered(bool)), qApp, SLOT(aboutQt())); // qApp is a global variable for the application
+    // qApp is a global variable for the application
+    QObject::connect(ui.actionAbout_Qt, SIGNAL(triggered(bool)), qApp, SLOT(aboutQt())); 
 
     QObject::connect(&qnode, SIGNAL(rosShutdown()), this, SLOT(close()));
 
@@ -70,7 +60,6 @@ namespace trajectory_planning_gui {
     connect(ui.btn_set_vel_scale_factor, SIGNAL(clicked()), this,SLOT(on_btnVelScaling()));
 
     connect(ui.btn_save_comm_settings, SIGNAL(clicked()), this, SLOT(save_comm_settings()));
-    // connect(ui.saveAudioSettings, SIGNAL(clicked()), this, SLOT(on_saveAudioSettings()));
     connect(ui.saveReferenceFrame, SIGNAL(clicked()), this, SLOT(on_saveReferenceFrame()));
 
     // PATH PLANNING(JOINT SPACE)
@@ -157,16 +146,6 @@ namespace trajectory_planning_gui {
     headers<<tr("Point")<<tr("Position (m)")<<tr("Orientation (deg)");
     PointTreeModel *model = new PointTreeModel(headers,QString::fromStdString("add_point_button"));
     ui.waypoints_treeView->setModel(model);
-
-    // Set progress bar when loading way-points from a yaml file. 
-    // could be nice when loading large way-points files
-    // ui.progressBar->setRange(0,100);
-    // ui.progressBar->setValue(0);
-    // ui.progressBar->hide();
-    // ui.control_parameters_frame->setEnabled(false);
-    // pd = new QProgressDialog("Adding waypoints from browsed file...", "Cancel", 0, 100);
-    // connect(pd, SIGNAL(canceled()), this, SLOT(cancel()));
-    // pd.setValue(0);
 
     setSliderStyle(ui.vel_scale_factor_slider);
     setSliderStyle(ui.horizontalSlider_1);
@@ -331,13 +310,6 @@ namespace trajectory_planning_gui {
     {
       jogJointpublish();
     }
-    // if (ui.jog_joint_enable_btn->isChecked() && ui.toolControlRB->isChecked())
-    // {
-    //   jogFramepublish();
-    // }
-    
-    // on_btn_read_joint_angle_clicked();
-    // on_btn_read_kinematic_pose_clicked();
   }
 
   /**
