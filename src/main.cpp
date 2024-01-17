@@ -23,9 +23,9 @@ int main(int argc, char **argv) {
     // w.setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
     w.show(); 
     // set title
-    w.setWindowTitle(QObject::tr("Trajectory Planning GUI"));
+    w.setWindowTitle(QObject::tr("Robotic Arm Controller"));
     // set app icon
-    w.setWindowIcon(QIcon(":images/orangewood.png"));
+    w.setWindowIcon(QIcon(":images/robot_icon.png"));
     // diable maximize button
     //w.setFixedSize(w.width(), w.height());
     //w.setFixedSize(1280, 720);
