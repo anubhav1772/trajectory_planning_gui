@@ -1992,11 +1992,11 @@
             </layout>
            </widget>
           </widget>
-          <widget class="QWidget" name="profile_tab">
+          <!--<widget class="QWidget" name="profile_tab">
            <attribute name="title">
             <string>PROFILE</string>
            </attribute>
-          </widget>
+          </widget>-->
           <widget class="QWidget" name="settings_tab">
            <attribute name="title">
             <string>SETTINGS</string>
