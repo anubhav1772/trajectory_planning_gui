@@ -1,6 +1,4 @@
 #include <QtGui>
-//#include <trajectory_planning_gui/point_tree_item.hpp>
-//#include <trajectory_planning_gui/point_tree_model.hpp>
 #include "../include/trajectory_planning_gui/point_tree_item.hpp"
 #include "../include/trajectory_planning_gui/point_tree_model.hpp"
 
