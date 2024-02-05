@@ -1,5 +1,5 @@
 # trajectory_planning_gui
-A C++ Qt-based software controller for a 6 DOF robotic arm. Backend is ROS.
+A C++ Qt-based software controller for a 6 DOF robotic arm, with ROS backend.
 
 ### Installation
 Clone the repositories using:
@@ -32,5 +32,6 @@ Launch GUI:
 ### Requirements
 * [6-dof-robotic-arm](https://github.com/anubhav1772/6-dof-robotic-arm) package
 * [Eigen v3.4.0](http://www.eigen.tuxfamily.org/index.php?title=Main_Page#Download) - [Installation](https://github.com/anubhav1772/trajectory_planning_gui/blob/main/Eigen3_installation)
+* Qt5Widgets, Qt5Multimedia and Qt5MultimediaWidgets
 * ROS Noetic (Ubuntu 20.04)
 * Gazebo v11.11.0
