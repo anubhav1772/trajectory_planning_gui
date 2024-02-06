@@ -29,6 +29,9 @@ Launch GUI:
     $ sudo apt install qtcreator
     $ sudo apt install libqt5multimedia5-plugins qtmultimedia5-dev
 
+### Cartestian-based trajectory planning (straight line path) 
+<img src="https://drive.google.com/uc?export=view&id=1UoxxS-7pokdOwdiFl92AJ5L-Jqb-CuxH" height="80%" width="80%"/>
+
 ### Requirements
 * [6-dof-robotic-arm](https://github.com/anubhav1772/6-dof-robotic-arm) package
 * [Eigen v3.4.0](http://www.eigen.tuxfamily.org/index.php?title=Main_Page#Download) - [Installation](https://github.com/anubhav1772/trajectory_planning_gui/blob/main/Eigen3_installation)
