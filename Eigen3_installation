@@ -1,5 +1,6 @@
 ##http://www.eigen.tuxfamily.org/index.php?title=Main_Page#Download
 wget https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.gz
+tar -xvzf eigen-3.4.0.tar.gz && rm -rf eigen-3.4.0.tar.gz
 cd eigen-3.4.0/
 mkdir build
 cd build/
